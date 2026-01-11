@@ -5,14 +5,24 @@
     <title>Bukti Peminjaman Ruangan</title>
     <style>
         body { font-family: Arial, sans-serif; }
-        h1 { color: #f97316; }
+        h1 { color: #f97316; margin-bottom: 4px; }
+        .kode {
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: #374151;
+        }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         td, th { border: 1px solid #ddd; padding: 8px; }
-        th { background-color: #f97316; color: white; }
+        th { background-color: #f97316; color: white; text-align: left; }
     </style>
 </head>
 <body>
+
     <h1>Bukti Peminjaman Ruangan</h1>
+    <p class="kode">
+        <strong>Kode Peminjaman:</strong> {{ $peminjaman->kode_peminjaman }}
+    </p>
+
     <p>Berikut adalah bukti peminjaman ruangan Anda:</p>
 
     <table>
@@ -57,5 +67,6 @@
             <td>{{ ucfirst($peminjaman->status) }}</td>
         </tr>
     </table>
+
 </body>
 </html>

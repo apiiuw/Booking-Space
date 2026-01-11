@@ -105,7 +105,9 @@ class LoanRequestController extends Controller
         $today = $now->toDateString();
         $timeNow = $now->format('H:i:s');
 
-        // Terjadwal -> Sedang Berlangsung
+        // ===============================
+        // TERJADWAL → SEDANG BERLANGSUNG
+        // ===============================
         PeminjamanRuangan::where('status', 'Terjadwal')
             ->whereDate('tanggal_peminjaman', $today)
             ->where('waktu_mulai', '<=', $timeNow)
@@ -114,13 +116,25 @@ class LoanRequestController extends Controller
                 'status' => 'Sedang Berlangsung'
             ]);
 
-        // Sedang Berlangsung -> Selesai
+        // =====================================
+        // SEDANG BERLANGSUNG → SELESAI
+        // =====================================
+
+        // 1️⃣ JIKA TANGGAL SUDAH LEWAT
         PeminjamanRuangan::where('status', 'Sedang Berlangsung')
-            ->whereDate('tanggal_peminjaman', '<=', $today)
+            ->whereDate('tanggal_peminjaman', '<', $today)
+            ->update([
+                'status' => 'Selesai'
+            ]);
+
+        // 2️⃣ JIKA HARI INI TAPI JAM SUDAH LEWAT
+        PeminjamanRuangan::where('status', 'Sedang Berlangsung')
+            ->whereDate('tanggal_peminjaman', $today)
             ->where('waktu_selesai', '<', $timeNow)
             ->update([
                 'status' => 'Selesai'
             ]);
     }
+
 
 }

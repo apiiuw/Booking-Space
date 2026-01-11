@@ -198,6 +198,12 @@
 
                   {{-- CONTENT --}}
                   <div class="p-6 max-h-[70vh] overflow-y-auto">
+                     <div class="mb-6">
+                        <p class="text-gray-500">Kode Peminjaman</p>
+                        <p class="inline-block mt-1 px-4 py-2 rounded-lg bg-orange-100 text-orange-700 font-semibold tracking-wide">
+                           <span x-text="selected?.kode_peminjaman"></span>
+                        </p>
+                     </div>
                      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm text-gray-700">
 
                         <div>
@@ -305,6 +311,13 @@
                <div class="bg-white text-gray-800 rounded-xl shadow-xl w-full max-w-md p-6">
 
                   <h3 class="font-semibold mb-3">Konfirmasi Peminjaman</h3>
+
+                  <div class="mb-3">
+                     <p class="text-sm text-gray-500">Kode Peminjaman</p>
+                     <p class="inline-block mt-1 px-3 py-1 rounded-md bg-orange-100 text-orange-700 font-semibold">
+                        <span x-text="selected?.kode_peminjaman"></span>
+                     </p>
+                  </div>
 
                   <p class="text-sm mb-4 text-gray-700">
                      Yakin memproses peminjaman ruangan

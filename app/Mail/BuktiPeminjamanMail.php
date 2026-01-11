@@ -14,20 +14,22 @@ class BuktiPeminjamanMail extends Mailable
     use Queueable, SerializesModels;
 
     public $peminjaman;
-    public $pdf;
+    public $filePath;
 
-    public function __construct($peminjaman, $pdf)
+    public function __construct($peminjaman, $filePath)
     {
         $this->peminjaman = $peminjaman;
-        $this->pdf = $pdf;
+        $this->filePath = $filePath;
     }
 
     public function build()
     {
-        return $this->subject('Bukti Peminjaman Ruangan')
-                    ->markdown('emails.bukti-peminjaman')
-                    ->attachData($this->pdf->output(), 'bukti_peminjaman.pdf', [
-                        'mime' => 'application/pdf',
-                    ]);
+        return $this->subject('Bukti Pengajuan Peminjaman Ruangan')
+            ->markdown('emails.bukti-peminjaman')
+            ->attach($this->filePath, [
+                'as' => basename($this->filePath),
+                'mime' => 'application/pdf',
+            ]);
     }
+
 }
