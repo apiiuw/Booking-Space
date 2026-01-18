@@ -55,35 +55,6 @@
         </div>
     </div>
 
-    @php
-        use Carbon\Carbon;
-
-        $timezone = 'Asia/Jakarta';
-        $now = Carbon::now($timezone);
-
-        // Ambil bulan yang sedang ditampilkan (default: sekarang)
-        $currentMonth = request()->get('month', $now->month);
-        $currentYear = request()->get('year', $now->year);
-
-        $displayedMonth = Carbon::createFromDate($currentYear, $currentMonth, 1, 0, 0, 0, $timezone);
-
-        // Hitung navigasi bulan sebelumnya & berikutnya
-        $prevMonth = $displayedMonth->copy()->subMonth();
-        $nextMonth = $displayedMonth->copy()->addMonth();
-
-        // Hari pertama & jumlah hari di bulan ini
-        $startOfMonth = $displayedMonth->copy()->startOfMonth();
-        $daysInMonth = $displayedMonth->daysInMonth;
-        $firstDayOfWeek = $startOfMonth->dayOfWeek; // 0 = Minggu
-
-        // Contoh daftar tanggal merah nasional (dummy)
-        $tanggalMerah = [
-            Carbon::create($currentYear, 1, 1),   // Tahun Baru
-            Carbon::create($currentYear, 8, 17),  // HUT RI
-            Carbon::create($currentYear, 12, 25), // Natal
-        ];
-    @endphp
-
     <div id="ketersediaan-jadwal" class="h-full flex flex-col px-10 justify-start py-10">
         <h1 class="text-orange-600 text-2xl font-raleway font-bold mb-4">Ketersediaan Jadwal</h1>
         <hr class="bg-gray-500 mb-6">
@@ -122,25 +93,69 @@
             <!-- Tanggal dalam bulan -->
             @for ($day = 1; $day <= $daysInMonth; $day++)
                 @php
-                    $date = Carbon::create($currentYear, $currentMonth, $day, 0, 0, 0, $timezone);
-                    $isSunday = $date->dayOfWeek === Carbon::SUNDAY;
-                    $isHoliday = collect($tanggalMerah)->contains(fn($d) => $d->isSameDay($date));
+                    $date = \Carbon\Carbon::create(
+                        $currentYear,
+                        $currentMonth,
+                        $day,
+                        0,
+                        0,
+                        0,
+                        $timezone
+                    );
 
-                    if ($isSunday || $isHoliday) {
+                    $dateKey = $date->toDateString();
+                    $today = \Carbon\Carbon::now($timezone)->startOfDay();
+
+                    $isPastDate = $date->lt($today);
+                    $isSunday = $date->dayOfWeek === \Carbon\Carbon::SUNDAY;
+                    $isHoliday = $tanggalMerah->contains(fn ($d) => $d->isSameDay($date));
+
+                    // Data booking di tanggal ini
+                    $bookings = $peminjaman[$dateKey] ?? collect();
+
+                    // ===============================
+                    // CEK FULL BOOKING (07:00 - 17:00)
+                    // ===============================
+                    $isFullBooked = false;
+
+                    if ($bookings->isNotEmpty()) {
+                        $earliest = $bookings->min('waktu_mulai');
+                        $latest   = $bookings->max('waktu_selesai');
+
+                        if ($earliest <= '07:00:00' && $latest >= '17:00:00') {
+                            $isFullBooked = true;
+                        }
+                    }
+
+                    // ===============================
+                    // STATUS & WARNA
+                    // ===============================
+                    if ($isPastDate) {
+                        $status = 'Tidak Tersedia';
+                        $bgColor = 'bg-gray-200 text-gray-400';
+                        $clickable = false;
+                    } elseif ($isSunday || $isHoliday) {
                         $status = 'Tanggal Merah';
-                        $bgColor = 'bg-red-100 hover:bg-red-200 text-red-700';
+                        $bgColor = 'bg-red-100 text-red-700';
+                        $clickable = false;
+                    } elseif ($isFullBooked) {
+                        $status = 'Full Booking';
+                        $bgColor = 'bg-red-200 text-red-400';
+                        $clickable = false;
+                    } elseif ($bookings->isNotEmpty()) {
+                        $status = 'Terpakai';
+                        $bgColor = 'bg-yellow-100 text-yellow-700';
+                        $clickable = true;
                     } else {
-                        $status = rand(0, 1) ? 'Tersedia' : 'Terpakai'; // simulasi data
-                        $bgColor = match($status) {
-                            'Tersedia' => 'bg-green-100 hover:bg-green-200 text-green-700',
-                            'Terpakai' => 'bg-yellow-100 hover:bg-yellow-200 text-yellow-700',
-                        };
+                        $status = 'Tersedia';
+                        $bgColor = 'bg-green-100 text-green-700';
+                        $clickable = true;
                     }
                 @endphp
 
-                @if ($status === 'Tanggal Merah')
+                @if (!$clickable)
                     <div class="p-3 border rounded {{ $bgColor }} cursor-not-allowed opacity-60">
-                        <p class="font-semibold text-gray-800">{{ $day }}</p>
+                        <p class="font-semibold">{{ $day }}</p>
                         <p class="text-xs">{{ $status }}</p>
                     </div>
                 @else
@@ -149,13 +164,14 @@
                         'ruangan' => $ruangan,
                         'tanggal' => $date->format('d-m-Y')
                     ]) }}"
-                    class="block p-3 border rounded {{ $bgColor }} cursor-pointer transition-all hover:scale-105">
-                        <p class="font-semibold text-gray-800">{{ $day }}</p>
+                    class="block p-3 border rounded {{ $bgColor }} hover:scale-105 transition">
+                        <p class="font-semibold">{{ $day }}</p>
                         <p class="text-xs">{{ $status }}</p>
                     </a>
                 @endif
 
             @endfor
+
         </div>
 
         <!-- Keterangan Warna -->
@@ -167,6 +183,10 @@
             <div class="flex items-center gap-2">
                 <div class="w-4 h-4 bg-yellow-300 border border-gray-400 rounded"></div>
                 <span class="text-gray-700 text-sm">Terpakai</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-4 h-4 bg-red-300 border border-gray-400 rounded"></div>
+                <span class="text-gray-700 text-sm">Full Booking</span>
             </div>
             <div class="flex items-center gap-2">
                 <div class="w-4 h-4 bg-red-300 border border-gray-400 rounded"></div>

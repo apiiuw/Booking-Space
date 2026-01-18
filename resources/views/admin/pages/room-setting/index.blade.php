@@ -2,17 +2,16 @@
 @section('container')
 
 <div class="p-4 sm:ml-64">
-   <div class="p-4 border-gray-200 h-screen">
+   <div class="p-4 border-gray-200 min-h-screen">
       <h2 class="text-orange-600 font-bold text-2xl">Pengaturan Ruangan</h2>
       <h3 class="text-orange-600 text-md mb-3">Pilihlah tipe ruangan yang ingin dilakukan pengaturan!</h3>
 
-      <div class="flex justify-end mb-4">
+      <!-- <div class="flex justify-end mb-4">
          <a href="{{ route('room.setting.create') }}"
             class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md text-sm font-medium">
             + Tambah Tipe Ruangan
          </a>
-      </div>
-
+      </div> -->
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
          @foreach ($roomTypes as $item)
@@ -20,7 +19,7 @@
                   class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row md:max-w-lg hover:bg-orange-100">
 
                   <img
-                     class="object-contain w-full rounded-t-lg h-full md:w-48 md:rounded-none md:rounded-s-lg"
+                     class="object-contain w-full rounded-t-lg md:w-48 md:rounded-none md:rounded-s-lg"
                      src="{{ asset($item->image) }}"
                      alt="{{ $item->type }}">
 
