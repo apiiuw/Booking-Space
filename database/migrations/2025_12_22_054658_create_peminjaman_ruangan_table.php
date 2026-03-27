@@ -10,6 +10,8 @@ return new class extends Migration {
         Schema::create('peminjaman_ruangan', function (Blueprint $table) {
             $table->id();
 
+            $table->string('kode_peminjaman')->nullable()->unique();
+
             // Relasi user (yang login)
             $table->foreignId('user_id')
                 ->constrained()

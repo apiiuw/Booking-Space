@@ -2,7 +2,7 @@
 @section('container')
 
 <div class="bg-white">
-    
+
     <div id="default-carousel" class="relative w-full bg-black" data-carousel="slide">
         <!-- Carousel wrapper -->
         <div class="relative h-56 overflow-hidden md:h-screen">
@@ -15,32 +15,32 @@
                     </span>
                 </h1>
                 <div class="flex flex-col justify-center mt-10 gap-y-3">
-                    <a href="/panduan" class="bg-orange-600 hover:bg-orange-700 py-2 px-4 text-lg text-center text-white font-semibold rounded-sm hover:scale-105 transition ease-in-out duration-300">Ajukan Peminjaman</a>
-                    <a href="/peminjaman-ruangan" class="bg-orange-600 hover:bg-orange-700 py-2 px-4 text-lg text-center text-white font-semibold rounded-sm hover:scale-105 transition ease-in-out duration-300">Syarat dan Ketentuan</a>
+                    <a href="/peminjaman-ruangan" class="bg-orange-600 hover:bg-orange-700 py-2 px-4 text-lg text-center text-white font-semibold rounded-sm hover:scale-105 transition ease-in-out duration-300">Ajukan Peminjaman</a>
+                    <a href="/panduan" class="bg-orange-600 hover:bg-orange-700 py-2 px-4 text-lg text-center text-white font-semibold rounded-sm hover:scale-105 transition ease-in-out duration-300">Syarat dan Ketentuan</a>
                 </div>
             </div>
             <!-- Item 1 -->
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="{{ asset('img/carousel/carousel-5.png') }}" 
-                    class="w-full h-full object-cover" 
+                <img src="{{ asset('img/carousel/carousel-5.png') }}"
+                    class="w-full h-full object-cover"
                     alt="...">
             </div>
             <!-- Item 2 -->
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="{{ asset('img/carousel/carousel-6.png') }}" 
-                    class="w-full h-full object-cover" 
+                <img src="{{ asset('img/carousel/carousel-6.png') }}"
+                    class="w-full h-full object-cover"
                     alt="...">
             </div>
             <!-- Item 3 -->
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="{{ asset('img/carousel/carousel-3.jpeg') }}" 
-                    class="w-full h-full object-cover" 
+                <img src="{{ asset('img/carousel/carousel-3.jpeg') }}"
+                    class="w-full h-full object-cover"
                     alt="...">
             </div>
             <!-- Item 4 -->
             <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="{{ asset('img/carousel/carousel-4.jpg') }}" 
-                    class="w-full h-full object-cover" 
+                <img src="{{ asset('img/carousel/carousel-4.jpg') }}"
+                    class="w-full h-full object-cover"
                     alt="...">
             </div>
         </div>
@@ -70,7 +70,7 @@
         </button>
     </div>
 
-    <div class="relative flex justify-center items-center px-10 md:px-20 py-16 bg-cover bg-center h-full md:h-[30rem]" 
+    <div class="relative flex justify-center items-center px-10 md:px-20 py-16 bg-cover bg-center h-full md:h-[30rem]"
         style="background-image: url('{{ asset('img/background/bg-tentang-kami.png') }}');">
         <div class="absolute inset-0 bg-black opacity-30"></div>
         <div class="relative flex flex-col md:flex-row w-full justify-center items-center gap-y-5 md:gap-y-0">
@@ -144,7 +144,7 @@
 
     </div>
 
-    <div class="relative flex justify-center items-center px-20 py-16 bg-cover bg-center h-screen" 
+    <div class="relative flex justify-center items-center px-20 py-16 bg-cover bg-center h-screen"
         style="background-image: url('{{ asset('img/background/bg-visi-misi.png') }}');">
         <div class="absolute inset-0 bg-black opacity-30"></div>
         <div class="relative flex w-full justify-center items-center">
