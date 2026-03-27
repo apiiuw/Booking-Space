@@ -75,8 +75,8 @@
         <div class="absolute inset-0 bg-black opacity-30"></div>
         <div class="relative flex flex-col md:flex-row w-full justify-center items-center gap-y-5 md:gap-y-0">
             <div class="w-full md:w-3/5">
-                <h1 class="text-3xl font-bold">Tentang <span class="text-orange-600">K</span>ami</h1>
-                <p class="font-semibold"><span class="text-2xl text-orange-600 font-bold">BookingSpace</span> merupakan sistem informasi yang dirancang untuk mempermudah proses pendaftaran dan peminjaman ruangan bagi mahasiswa Fakultas Ilmu Komputer Universitas Pembangunan Nasional “Veteran” Jakarta. Melalui platform ini, pengguna dapat mengakses informasi ketersediaan ruangan secara real-time, melakukan pemesanan dengan mudah, serta memantau status peminjaman secara transparan dan efisien.</p>
+                <h1 class="text-3xl font-bold text-white">Tentang <span class="text-orange-600">K</span>ami</h1>
+                <p class="font-semibold text-white"><span class="text-2xl text-orange-600 font-bold">BookingSpace</span> merupakan sistem informasi yang dirancang untuk mempermudah proses pendaftaran dan peminjaman ruangan bagi mahasiswa Fakultas Ilmu Komputer Universitas Pembangunan Nasional “Veteran” Jakarta. Melalui platform ini, pengguna dapat mengakses informasi ketersediaan ruangan secara real-time, melakukan pemesanan dengan mudah, serta memantau status peminjaman secara transparan dan efisien.</p>
             </div>
             <div class="w-full md:w-2/5 -mb-20 flex justify-center items-center">
                 <img class=" h-[30rem] rounded-md shadow-md z-30" src="{{ asset('img/background/mockup-tentang-kami.png') }}">
@@ -152,28 +152,28 @@
                 <img class="w-1/2" src="{{ asset('img/icon/Bs.png') }}">
             </div>
             <div class="w-3/5">
-                <h1 class="text-3xl font-bold"><span class="text-orange-600">V</span>isi</h1>
-                <p class="font-semibold">Mewujudkan sistem informasi yang efisien, transparan, dan terintegrasi dalam mendukung kegiatan akademik serta pengelolaan fasilitas Fakultas Ilmu Komputer UPN "Veteran" Jakarta.</p>
-                <h1 class="text-3xl font-bold mt-3"><span class="text-orange-600">M</span>isi</h1>
+                <h1 class="text-3xl font-bold text-white"><span class="text-orange-600">V</span>isi</h1>
+                <p class="font-semibold text-white">Mewujudkan sistem informasi yang efisien, transparan, dan terintegrasi dalam mendukung kegiatan akademik serta pengelolaan fasilitas Fakultas Ilmu Komputer UPN "Veteran" Jakarta.</p>
+                <h1 class="text-3xl font-bold mt-3 text-white"><span class="text-orange-600">M</span>isi</h1>
                 <div class="flex justify-start gap-x-3">
                     <i class="fa-solid fa-circle-nodes text-xl text-orange-400 font-bold"></i>
-                    <p class="font-semibold"> Menyediakan layanan digital yang memudahkan mahasiswa, dosen, dan tenaga kependidikan dalam proses pendaftaran serta peminjaman ruangan secara cepat dan akurat.</p>
+                    <p class="font-semibold text-white"> Menyediakan layanan digital yang memudahkan mahasiswa, dosen, dan tenaga kependidikan dalam proses pendaftaran serta peminjaman ruangan secara cepat dan akurat.</p>
                 </div>
                 <div class="flex justify-start gap-x-3">
                     <i class="fa-solid fa-circle-nodes text-xl text-orange-400 font-bold"></i>
-                    <p class="font-semibold"> Meningkatkan transparansi dan akuntabilitas dalam pengelolaan penggunaan ruangan fakultas.</p>
+                    <p class="font-semibold text-white"> Meningkatkan transparansi dan akuntabilitas dalam pengelolaan penggunaan ruangan fakultas.</p>
                 </div>
                 <div class="flex justify-start gap-x-3">
                     <i class="fa-solid fa-circle-nodes text-xl text-orange-400 font-bold"></i>
-                    <p class="font-semibold"> Mengoptimalkan pemanfaatan teknologi informasi untuk mendukung tata kelola administrasi akademik yang modern dan berkelanjutan.</p>
+                    <p class="font-semibold text-white"> Mengoptimalkan pemanfaatan teknologi informasi untuk mendukung tata kelola administrasi akademik yang modern dan berkelanjutan.</p>
                 </div>
                 <div class="flex justify-start gap-x-3">
                     <i class="fa-solid fa-circle-nodes text-xl text-orange-400 font-bold"></i>
-                    <p class="font-semibold"> Mendukung kegiatan akademik dan non-akademik melalui sistem yang dapat diakses kapan saja dan di mana saja.</p>
+                    <p class="font-semibold text-white"> Mendukung kegiatan akademik dan non-akademik melalui sistem yang dapat diakses kapan saja dan di mana saja.</p>
                 </div>
                 <div class="flex justify-start gap-x-3">
                     <i class="fa-solid fa-circle-nodes text-xl text-orange-400 font-bold"></i>
-                    <p class="font-semibold"> Mendukung kegiatan akademik dan non-akademik melalui sistem yang dapat diakses kapan saja dan di mana saja.</p>
+                    <p class="font-semibold text-white"> Mendukung kegiatan akademik dan non-akademik melalui sistem yang dapat diakses kapan saja dan di mana saja.</p>
                 </div>
             </div>
         </div>
