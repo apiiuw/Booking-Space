@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@upnvj.ac.id',
             'password' => Hash::make('password123'),
             'role' => 'admin',
-            'jenis_kelamin' => 'L',
+            'jenis_kelamin' => 'l',
         ]);
 
         // User biasa
@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
             'email' => 'user@upnvj.ac.id',
             'password' => Hash::make('password123'),
             'role' => 'user',
-            'jenis_kelamin' => 'P',
+            'jenis_kelamin' => 'p',
         ]);
     }
 }

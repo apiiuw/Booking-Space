@@ -1,32 +1,31 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
     public function up(): void
     {
-        DB::statement("
-            ALTER TABLE peminjaman_ruangan 
-            MODIFY status ENUM(
-                'Belum Diproses',
-                'Terjadwal',
-                'Sedang Berlangsung',
-                'Selesai',
-                'Ditolak'
-            ) DEFAULT 'Belum Diproses'
-        ");
+        if (DB::getDriverName() === 'sqlite') {
+            DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+        }
+
+        Schema::table('peminjaman_ruangan', function (Blueprint $table) {
+            $table->string('status')->default('Belum Diproses')->change();
+        });
     }
 
     public function down(): void
     {
-        DB::statement("
-            ALTER TABLE peminjaman_ruangan 
-            MODIFY status ENUM(
-                'Belum Diproses',
-                'Ditolak'
-            ) DEFAULT 'Belum Diproses'
-        ");
+        if (DB::getDriverName() === 'sqlite') {
+            DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+        }
+
+        Schema::table('peminjaman_ruangan', function (Blueprint $table) {
+            $table->string('status')->default('Belum Diproses')->change();
+        });
     }
 };
