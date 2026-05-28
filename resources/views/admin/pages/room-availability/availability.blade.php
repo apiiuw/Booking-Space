@@ -1,58 +1,71 @@
 @extends('admin.layouts.main')
-
 @section('container')
-<div class="p-4 sm:ml-64 min-h-screen">
-    <div class="p-4">
 
+<div class="p-4 sm:ml-64 min-h-screen bg-slate-50/50 pb-20 relative overflow-hidden font-raleway">
+    <!-- Decorative Glowing Mesh Background Blobs -->
+    <div class="absolute top-[-10%] right-[-10%] w-[35rem] h-[35rem] bg-gradient-to-br from-orange-200/20 to-amber-200/20 rounded-full blur-3xl -z-10 animate-pulse" style="animation-duration: 8s;"></div>
+    <div class="absolute bottom-[10%] left-[-5%] w-[30rem] h-[30rem] bg-gradient-to-tr from-orange-100/10 to-amber-100/25 rounded-full blur-3xl -z-10"></div>
+
+    <div class="max-w-7xl mx-auto px-4 pt-6 relative">
         @php
             use Carbon\Carbon;
 
             $timezone = 'Asia/Jakarta';
             $now = Carbon::now($timezone);
 
-            // Ambil bulan yang sedang ditampilkan (default: sekarang)
             $currentMonth = request()->get('month', $now->month);
             $currentYear = request()->get('year', $now->year);
 
             $displayedMonth = Carbon::createFromDate($currentYear, $currentMonth, 1, 0, 0, 0, $timezone);
 
-            // Hitung navigasi bulan sebelumnya & berikutnya
             $prevMonth = $displayedMonth->copy()->subMonth();
             $nextMonth = $displayedMonth->copy()->addMonth();
 
-            // Hari pertama & jumlah hari di bulan ini
             $startOfMonth = $displayedMonth->copy()->startOfMonth();
             $daysInMonth = $displayedMonth->daysInMonth;
-            $firstDayOfWeek = $startOfMonth->dayOfWeek; // 0 = Minggu
+            $firstDayOfWeek = $startOfMonth->dayOfWeek;
 
-            // Contoh daftar tanggal merah nasional (dummy)
             $tanggalMerah = [
-                Carbon::create($currentYear, 1, 1),   // Tahun Baru
-                Carbon::create($currentYear, 8, 17),  // HUT RI
-                Carbon::create($currentYear, 12, 25), // Natal
+                Carbon::create($currentYear, 1, 1),
+                Carbon::create($currentYear, 8, 17),
+                Carbon::create($currentYear, 12, 25),
             ];
         @endphp
 
-        <div class="min-h-screen flex flex-col justify-start">
-            <h1 class="text-orange-600 text-2xl font-bold">Ketersediaan Jadwal {{ $roomName }} {{ $roomNumber }}</h1>
-            <h3 class="text-orange-600 text-md mb-3">Halaman ketersediaan untuk tipe <b>{{ $roomName }} {{ $roomNumber }}</b></h3>
-            <hr class="bg-gray-500 mb-6">
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-slate-200/80 pb-5 mb-8">
+            <div>
+                <span class="text-orange-600 font-extrabold text-xs uppercase tracking-widest">Informasi Jadwal &bull; {{ $roomName }} {{ $roomNumber }}</span>
+                <h1 class="text-slate-800 text-3xl font-black flex items-center mt-1">
+                    <span class="w-3 h-8 bg-gradient-to-b from-orange-500 to-amber-500 rounded-lg mr-3 shadow-md shadow-orange-500/25"></span>
+                    Ketersediaan Jadwal
+                </h1>
+                <p class="text-slate-500 text-xs md:text-sm mt-1">Lihat status ketersediaan harian untuk tipe ruangan ini.</p>
+            </div>
+        </div>
 
-            <!-- Navigasi Bulan -->
-            <div class="flex justify-between items-center mb-2">
+        {{-- CALENDAR WRAPPER --}}
+        <div class="bg-white rounded-[32px] border border-slate-100 p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.015)]">
+            
+            <!-- Month Navigation -->
+            <div class="flex justify-between items-center bg-slate-50 p-4 rounded-2xl mb-8 border border-slate-100">
                 <a href="?month={{ $prevMonth->month }}&year={{ $prevMonth->year }}"
-                class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded transition">&lt;</a>
+                    class="bg-white hover:bg-orange-50 hover:text-orange-600 active:scale-90 text-slate-700 font-bold w-11 h-11 flex justify-center items-center rounded-xl shadow-sm border border-slate-200/50 transition">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </a>
 
-                <h2 class="text-xl font-semibold text-gray-800">
+                <h3 class="text-lg font-black text-slate-800 tracking-tight">
                     {{ $displayedMonth->translatedFormat('F Y') }}
-                </h2>
+                </h3>
 
                 <a href="?month={{ $nextMonth->month }}&year={{ $nextMonth->year }}"
-                class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded transition">&gt;</a>
+                    class="bg-white hover:bg-orange-50 hover:text-orange-600 active:scale-90 text-slate-700 font-bold w-11 h-11 flex justify-center items-center rounded-xl shadow-sm border border-slate-200/50 transition">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </a>
             </div>
 
-            <!-- Nama Hari di bawah judul bulan -->
-            <div class="grid grid-cols-7 text-center font-semibold border-b border-gray-300 mb-4 mt-2 text-gray-700">
+            <!-- Day Headers -->
+            <div class="grid grid-cols-7 text-center font-extrabold text-[10px] md:text-xs text-slate-400 mb-4 py-2 border-b border-slate-100 uppercase tracking-widest">
                 <div>Min</div>
                 <div>Sen</div>
                 <div>Sel</div>
@@ -62,8 +75,8 @@
                 <div>Sab</div>
             </div>
 
-            <!-- Grid Kalender -->
-            <div class="grid grid-cols-7 gap-2 text-center">
+            <!-- Calendar Days -->
+            <div class="grid grid-cols-7 gap-3 text-center">
                 <!-- Kosong sebelum tanggal 1 -->
                 @for ($i = 0; $i < $firstDayOfWeek; $i++)
                     <div></div>
@@ -78,25 +91,22 @@
                         $isSunday = $date->dayOfWeek === Carbon::SUNDAY;
                         $isHoliday = collect($tanggalMerah)->contains(fn($d) => $d->isSameDay($date));
 
-                        // Data peminjaman di tanggal ini
                         $bookings = $peminjaman[$dateKey] ?? collect();
 
-                        // Hitung total menit terpakai
                         $totalMinutes = $bookings->sum(function ($item) {
                             $start = Carbon::parse($item->waktu_mulai);
                             $end   = Carbon::parse($item->waktu_selesai);
                             return $end->diffInMinutes($start);
                         });
 
-                        // 07.00 - 17.00 = 600 menit
                         $isFull = $totalMinutes >= 600;
                     @endphp
 
                     {{-- TANGGAL MERAH --}}
                     @if ($isSunday || $isHoliday)
-                        <div class="p-3 border rounded bg-red-100 text-red-700 cursor-not-allowed">
-                            <p class="font-semibold text-gray-800">{{ $day }}</p>
-                            <p class="text-xs">Tanggal Merah</p>
+                        <div class="p-3.5 border rounded-2xl bg-red-50 text-red-650 border-red-150 cursor-not-allowed opacity-60 flex flex-col justify-between h-20">
+                            <p class="font-extrabold text-sm md:text-base text-left">{{ $day }}</p>
+                            <p class="text-[8px] md:text-[9px] uppercase font-black tracking-wider text-right">Libur</p>
                         </div>
 
                     {{-- FULL --}}
@@ -106,9 +116,9 @@
                             'roomNumber' => $roomNumber,
                             'date' => $date->format('d-m-Y')
                         ]) }}"
-                        class="block p-3 border rounded bg-red-200 hover:bg-red-300 text-red-800">
-                            <p class="font-semibold text-gray-800">{{ $day }}</p>
-                            <p class="text-xs font-semibold">Full</p>
+                        class="block p-3.5 border rounded-2xl bg-rose-50 text-rose-650 border-rose-150 hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.01)] hover:shadow-md flex flex-col justify-between h-20">
+                            <p class="font-extrabold text-sm md:text-base text-left">{{ $day }}</p>
+                            <p class="text-[8px] md:text-[9px] uppercase font-black tracking-wider text-right">Penuh</p>
                         </a>
 
                     {{-- TERPAKAI --}}
@@ -118,9 +128,9 @@
                             'roomNumber' => $roomNumber,
                             'date' => $date->format('d-m-Y')
                         ]) }}"
-                        class="block p-3 border rounded bg-yellow-100 hover:bg-yellow-200 text-yellow-700">
-                            <p class="font-semibold text-gray-800">{{ $day }}</p>
-                            <p class="text-xs">Terpakai</p>
+                        class="block p-3.5 border rounded-2xl bg-amber-50 text-amber-700 border-amber-200/60 hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.01)] hover:shadow-md flex flex-col justify-between h-20">
+                            <p class="font-extrabold text-sm md:text-base text-left">{{ $day }}</p>
+                            <p class="text-[8px] md:text-[9px] uppercase font-black tracking-wider text-right">Terpakai</p>
                         </a>
 
                     {{-- TERSEDIA --}}
@@ -130,36 +140,36 @@
                             'roomNumber' => $roomNumber,
                             'date' => $date->format('d-m-Y')
                         ]) }}"
-                        class="block p-3 border rounded bg-green-100 hover:bg-green-200 text-green-700">
-                            <p class="font-semibold text-gray-800">{{ $day }}</p>
-                            <p class="text-xs">Tersedia</p>
+                        class="block p-3.5 border rounded-2xl bg-emerald-50 text-emerald-700 border-emerald-200/60 hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.01)] hover:shadow-md flex flex-col justify-between h-20">
+                            <p class="font-extrabold text-sm md:text-base text-left">{{ $day }}</p>
+                            <p class="text-[8px] md:text-[9px] uppercase font-black tracking-wider text-right">Tersedia</p>
                         </a>
                     @endif
                 @endfor
-
-
             </div>
 
-            <!-- Keterangan Warna -->
-            <div class="flex gap-6 mt-6">
+            <!-- Legends -->
+            <div class="flex flex-wrap gap-4 md:gap-8 mt-10 pt-6 border-t border-slate-150">
                 <div class="flex items-center gap-2">
-                    <div class="w-4 h-4 bg-green-300 border border-gray-400 rounded"></div>
-                    <span class="text-gray-700 text-sm">Tersedia</span>
+                    <span class="w-4 h-4 bg-emerald-50 border border-emerald-200 rounded-lg"></span>
+                    <span class="text-slate-600 text-xs font-bold">Tersedia</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <div class="w-4 h-4 bg-yellow-300 border border-gray-400 rounded"></div>
-                    <span class="text-gray-700 text-sm">Terpakai</span>
+                    <span class="w-4 h-4 bg-amber-50 border border-amber-200 rounded-lg"></span>
+                    <span class="text-slate-600 text-xs font-bold">Terpakai (Sebagian Jam)</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <div class="w-4 h-4 bg-red-400 border border-gray-400 rounded"></div>
-                    <span class="text-gray-700 text-sm">Full</span>
+                    <span class="w-4 h-4 bg-rose-50 border border-rose-200 rounded-lg"></span>
+                    <span class="text-slate-600 text-xs font-bold">Penuh (Full Booking)</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <div class="w-4 h-4 bg-red-300 border border-gray-400 rounded"></div>
-                    <span class="text-gray-700 text-sm">Tanggal Merah</span>
+                    <span class="w-4 h-4 bg-red-50 border border-red-150 rounded-lg"></span>
+                    <span class="text-slate-600 text-xs font-bold">Hari Libur / Tanggal Merah</span>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
 @endsection

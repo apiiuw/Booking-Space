@@ -32,18 +32,29 @@ class RoomAvailabilityController extends Controller
         $roomName = match ($type) {
             'rapat' => 'Ruang Rapat',
             'sidang' => 'Ruang Sidang',
-            'lab-komputer' => 'Laboratorium Komputer',
-            'aula' => 'Aula',
+            'lab-komputer' => 'Ruang Lab Komputer',
+            'aula' => 'Ruang Aula',
             default => 'Ruangan Tidak Diketahui',
         };
+
+        $dbTipe = match ($type) {
+            'rapat' => 'Rapat',
+            'sidang' => 'Sidang',
+            'lab-komputer' => 'Laboratorium Komputer',
+            'aula' => 'Aula',
+            default => $type,
+        };
+
+        $dbRuangan = $dbTipe . ' ' . $roomNumber;
 
         $timezone = 'Asia/Jakarta';
         $month = request()->get('month', now()->month);
         $year  = request()->get('year', now()->year);
 
         // Ambil semua peminjaman ruangan ini dalam 1 bulan
-        $peminjaman = PeminjamanRuangan::where('tipe_ruangan', $roomName)
-            ->where('ruangan', $roomName . ' ' . $roomNumber)
+        $peminjaman = PeminjamanRuangan::where('tipe_ruangan', $dbTipe)
+            ->where('ruangan', $dbRuangan)
+            ->whereIn('status', ['Belum Diproses', 'Terjadwal', 'Sedang Berlangsung', 'Selesai'])
             ->whereYear('tanggal_peminjaman', $year)
             ->whereMonth('tanggal_peminjaman', $month)
             ->get()
@@ -60,10 +71,20 @@ class RoomAvailabilityController extends Controller
         $roomName = match ($type) {
             'rapat' => 'Ruang Rapat',
             'sidang' => 'Ruang Sidang',
-            'lab-komputer' => 'Laboratorium Komputer',
-            'aula' => 'Aula',
+            'lab-komputer' => 'Ruang Lab Komputer',
+            'aula' => 'Ruang Aula',
             default => 'Ruangan Tidak Diketahui',
         };
+
+        $dbTipe = match ($type) {
+            'rapat' => 'Rapat',
+            'sidang' => 'Sidang',
+            'lab-komputer' => 'Laboratorium Komputer',
+            'aula' => 'Aula',
+            default => $type,
+        };
+
+        $dbRuangan = $dbTipe . ' ' . $roomNumber;
 
         $timezone = 'Asia/Jakarta';
         $selectedDate = Carbon::createFromFormat('d-m-Y', $date, $timezone);
@@ -72,9 +93,10 @@ class RoomAvailabilityController extends Controller
         $dayStart = Carbon::createFromTime(7, 0, 0, $timezone);
         $dayEnd   = Carbon::createFromTime(17, 0, 0, $timezone);
 
-        $bookings = PeminjamanRuangan::where('tipe_ruangan', $roomName)
-            ->where('ruangan', $roomName . ' ' . $roomNumber)
+        $bookings = PeminjamanRuangan::where('tipe_ruangan', $dbTipe)
+            ->where('ruangan', $dbRuangan)
             ->whereDate('tanggal_peminjaman', $selectedDate->format('Y-m-d'))
+            ->whereIn('status', ['Belum Diproses', 'Terjadwal', 'Sedang Berlangsung', 'Selesai'])
             ->orderBy('waktu_mulai')
             ->get();
 
