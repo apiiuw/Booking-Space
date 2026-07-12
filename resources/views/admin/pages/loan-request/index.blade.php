@@ -235,11 +235,22 @@
                                     x-text="selected?.status"
                                 ></span>
                             </div>
+                            <div class="border-b border-slate-50 pb-2 col-span-1 md:col-span-2">
+                                <p class="text-slate-400 font-semibold mb-1">Dokumen Form Peminjaman</p>
+                                <template x-if="selected?.document_user">
+                                    <a :href="'{{ Storage::url('') }}' + selected.document_user.replace('public/', '')" target="_blank" class="inline-flex items-center text-xs font-bold bg-white text-orange-600 border border-orange-200 hover:bg-orange-50 px-3 py-2 rounded-lg transition mt-1">
+                                        <i class="fa-solid fa-file-pdf mr-2"></i> Lihat / Download Dokumen
+                                    </a>
+                                </template>
+                                <template x-if="!selected?.document_user">
+                                    <p class="font-bold text-slate-800 mt-1">Tidak ada dokumen</p>
+                                </template>
+                            </div>
                         </div>
 
                         <div>
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Tujuan / Keperluan</p>
-                            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-xs md:text-sm text-slate-650 leading-relaxed font-semibold">
+                            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-xs md:text-sm text-slate-700 leading-relaxed font-semibold">
                                 <span x-text="selected?.keperluan"></span>
                             </div>
                         </div>
@@ -285,31 +296,31 @@
                         Silakan pilih tindakan untuk pengajuan ini. Menolak atau menyetujui akan memperbarui status peminjaman secara instan.
                     </p>
 
-                    <div class="flex justify-end gap-2.5">
-                        <button type="button" @click="confirmApprove = false" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2.5 rounded-xl transition text-xs uppercase tracking-wider border border-slate-200/50">
-                            Batal
-                        </button>
+                    <form method="POST" id="processForm" enctype="multipart/form-data">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="id" x-bind:value="selected.id">
 
-                        {{-- REJECT FORM --}}
-                        <form method="POST" action="{{ route('loan.request.reject') }}">
-                            @csrf
-                            @method('PATCH')
-                            <input type="hidden" name="id" x-bind:value="selected.id">
-                            <button type="submit" class="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-extrabold px-4.5 py-2.5 rounded-xl transition text-xs uppercase tracking-wider shadow-sm">
+                        <div class="mb-6">
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Surat Balasan / Persetujuan (PDF)</label>
+                            <input type="file" name="document_admin" required accept="application/pdf" class="w-full text-sm p-2 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:outline-none transition-all duration-200 text-slate-800 bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
+                            <span class="text-[10px] text-slate-400 mt-1 block font-medium">Unggah surat balasan untuk peminjam. Format: PDF, Maks: 5MB.</span>
+                        </div>
+
+                        <div class="flex justify-end gap-3 mt-4">
+                            <button type="button" @click="confirmApprove = false" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-6 py-3 rounded-xl transition text-xs uppercase tracking-wider border border-slate-200/50">
+                                Batal
+                            </button>
+
+                            <button type="submit" @click="document.getElementById('processForm').action = '{{ url('admin/loan-request/reject') }}'" class="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-extrabold px-6 py-3 rounded-xl transition text-xs uppercase tracking-wider shadow-sm">
                                 Tolak
                             </button>
-                        </form>
 
-                        {{-- APPROVE FORM --}}
-                        <form method="POST" action="{{ route('loan.request.approve', ['id' => 0]) }}">
-                            @csrf
-                            @method('PATCH')
-                            <input type="hidden" name="id" x-bind:value="selected.id">
-                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-extrabold px-4.5 py-2.5 rounded-xl transition text-xs uppercase tracking-wider shadow-sm">
+                            <button type="submit" @click="document.getElementById('processForm').action = '{{ url('admin/loan-request') }}/' + selected?.id + '/approve'" class="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-extrabold px-6 py-3 rounded-xl transition text-xs uppercase tracking-wider shadow-sm">
                                 Setujui
                             </button>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 

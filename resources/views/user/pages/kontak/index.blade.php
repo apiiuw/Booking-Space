@@ -54,14 +54,14 @@
                         </a>
 
                         <!-- Twitter/X -->
-                        <a href="https://x.com/fikupnvj" target="_blank" class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-orange-50/50 border border-slate-100 hover:border-orange-100 transition duration-300 group">
+                        <a href="https://x.com/UPNVJ" target="_blank" class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-orange-50/50 border border-slate-100 hover:border-orange-100 transition duration-300 group">
                             <div class="flex items-center gap-3.5">
                                 <span class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white transition duration-300">
                                     <i class="fa-brands fa-x-twitter text-lg"></i>
                                 </span>
                                 <div>
                                     <h4 class="text-slate-800 font-bold text-sm">X / Twitter</h4>
-                                    <p class="text-slate-500 text-xs mt-0.5">@fikupnvj</p>
+                                    <p class="text-slate-500 text-xs mt-0.5">@UPNVJ</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-orange-500 group-hover:translate-x-1 transition duration-300 text-xs"></i>
@@ -82,14 +82,14 @@
                         </a>
 
                         <!-- Website -->
-                        <a href="https://fik.upnvj.ac.id" target="_blank" class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-orange-50/50 border border-slate-100 hover:border-orange-100 transition duration-300 group">
+                        <a href="https://new-fik.upnvj.ac.id/" target="_blank" class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-orange-50/50 border border-slate-100 hover:border-orange-100 transition duration-300 group">
                             <div class="flex items-center gap-3.5">
                                 <span class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white transition duration-300">
                                     <i class="fa-solid fa-earth-americas text-lg"></i>
                                 </span>
                                 <div>
                                     <h4 class="text-slate-800 font-bold text-sm">Website Resmi</h4>
-                                    <p class="text-slate-500 text-xs mt-0.5">fik.upnvj.ac.id</p>
+                                    <p class="text-slate-500 text-xs mt-0.5">new-fik.upnvj.ac.id</p>
                                 </div>
                             </div>
                             <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-orange-500 group-hover:translate-x-1 transition duration-300 text-xs"></i>

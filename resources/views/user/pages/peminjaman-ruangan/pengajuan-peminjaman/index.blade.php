@@ -103,9 +103,14 @@
                         Form Pengajuan Peminjaman
                     </h2>
                     <p class="text-slate-500 text-xs mt-1">Lengkapi informasi di bawah ini secara lengkap dan benar.</p>
+                    <div class="mt-4">
+                        <a href="{{ asset('pdf/template-form-peminjaman/Surat Permohonan Peminjaman Ruangan.pdf') }}" download class="inline-flex items-center text-xs font-bold bg-white text-orange-600 border border-orange-200 hover:bg-orange-50 px-3 py-2 rounded-lg transition">
+                            <i class="fa-solid fa-download mr-2"></i> Download Template Form Peminjaman
+                        </a>
+                    </div>
                 </div>
 
-                <form action="{{ route('peminjamanRuangan.pengajuan-peminjaman.store', ['tipe' => $tipe, 'ruangan' => $ruangan, 'tanggal' => $tanggal->format('d-m-Y')]) }}" method="POST" class="p-6 md:p-8 space-y-6">
+                <form action="{{ route('peminjamanRuangan.pengajuan-peminjaman.store', ['tipe' => $tipe, 'ruangan' => $ruangan, 'tanggal' => $tanggal->format('d-m-Y')]) }}" method="POST" enctype="multipart/form-data" class="p-6 md:p-8 space-y-6">
                     @csrf
                     <input type="hidden" name="email" value="{{ auth()->user()->email }}">
                     
@@ -241,6 +246,19 @@
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1.5">Tujuan / Keperluan Peminjaman</label>
                             <textarea name="keperluan" rows="4" required class="w-full text-sm p-3.5 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:outline-none transition-all duration-200 text-slate-800 placeholder:text-slate-400 font-medium" placeholder="Tuliskan detail agenda / keperluan acara secara jelas..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: Upload Dokumen -->
+                    <div class="space-y-4 pt-4 border-t border-slate-100">
+                        <h3 class="text-slate-800 text-sm font-extrabold border-b border-slate-100 pb-2 flex items-center uppercase tracking-wider">
+                            <span class="w-1.5 h-4 bg-orange-500 rounded-full mr-2 shadow-sm shadow-orange-500/20"></span>
+                            Upload Dokumen
+                        </h3>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Form Peminjaman (PDF)</label>
+                            <input type="file" name="document_user" required accept="application/pdf" class="w-full text-sm p-2 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:outline-none transition-all duration-200 text-slate-800 bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
+                            <span class="text-[10px] text-slate-400 mt-1 block font-medium">Unggah form peminjaman yang sudah diisi dan ditandatangani. Format: PDF, Maks: 5MB.</span>
                         </div>
                     </div>
 

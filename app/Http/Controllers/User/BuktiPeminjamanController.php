@@ -44,14 +44,14 @@ class BuktiPeminjamanController extends Controller
         // =====================================
 
         // 1️⃣ JIKA TANGGAL SUDAH LEWAT
-        PeminjamanRuangan::where('status', 'Sedang Berlangsung')
+        PeminjamanRuangan::whereIn('status', ['Terjadwal', 'Sedang Berlangsung'])
             ->whereDate('tanggal_peminjaman', '<', $today)
             ->update([
                 'status' => 'Selesai'
             ]);
 
         // 2️⃣ JIKA HARI INI TAPI JAM SUDAH LEWAT
-        PeminjamanRuangan::where('status', 'Sedang Berlangsung')
+        PeminjamanRuangan::whereIn('status', ['Terjadwal', 'Sedang Berlangsung'])
             ->whereDate('tanggal_peminjaman', $today)
             ->where('waktu_selesai', '<', $timeNow)
             ->update([

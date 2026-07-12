@@ -53,18 +53,32 @@
                     </span>
                 </p>
 
-                {{-- BUTTON LIHAT BUKTI --}}
-                <button
-                    @click="
-                        const fileName = 'Bukti Peminjaman #{{ $item->kode_peminjaman }}.pdf';
-                        pdfUrl = '/pdf/bukti-peminjaman/' + encodeURIComponent(fileName);
-                        kode = '{{ $item->kode_peminjaman }}';
-                        open = true;
-                    "
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-orange-600 rounded-lg hover:bg-orange-700"
-                >
-                    Lihat Bukti Peminjaman
-                </button>
+                <div class="flex flex-col gap-2 mt-2">
+                    <button
+                        @click="
+                            const fileName = 'Bukti Peminjaman #{{ $item->kode_peminjaman }}.pdf';
+                            pdfUrl = '/pdf/bukti-peminjaman/' + encodeURIComponent(fileName);
+                            kode = '{{ $item->kode_peminjaman }}';
+                            open = true;
+                        "
+                        class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-orange-600 rounded-lg hover:bg-orange-700"
+                    >
+                        Lihat Bukti Pengajuan
+                    </button>
+
+                    @if($item->document_admin)
+                        <button
+                            @click="
+                                pdfUrl = '{{ Storage::url(str_replace('public/', '', $item->document_admin)) }}';
+                                kode = '{{ $item->kode_peminjaman }}';
+                                open = true;
+                            "
+                            class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-orange-700 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition"
+                        >
+                            <i class="fa-solid fa-eye mr-2"></i> Lihat Surat Balasan Admin
+                        </button>
+                    @endif
+                </div>
 
 
             </div>

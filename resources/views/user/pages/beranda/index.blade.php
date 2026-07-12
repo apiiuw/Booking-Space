@@ -70,7 +70,7 @@
         </button>
     </div>
 
-    <div class="relative flex justify-center items-center px-10 md:px-20 py-16 bg-cover bg-center h-full md:h-[30rem]"
+    <div id="tentang-kami" class="relative flex justify-center items-center px-10 md:px-20 py-16 bg-cover bg-center h-full md:h-[30rem]"
         style="background-image: url('{{ asset('img/background/bg-tentang-kami.png') }}');">
         <div class="absolute inset-0 bg-black opacity-30"></div>
         <div class="relative flex flex-col md:flex-row w-full justify-center items-center gap-y-8 md:gap-y-0">
@@ -207,7 +207,7 @@
         </div>
     </div>
 
-    <div class="relative flex justify-center items-center px-10 md:px-20 py-16 bg-cover bg-center h-full"
+    <div id="visi-misi" class="relative flex justify-center items-center px-10 md:px-20 py-16 bg-cover bg-center h-full"
         style="background-image: url('{{ asset('img/background/bg-visi-misi.png') }}');">
         <div class="absolute inset-0 bg-black opacity-30"></div>
         <div class="relative flex flex-col md:flex-row w-full justify-center items-center gap-10">

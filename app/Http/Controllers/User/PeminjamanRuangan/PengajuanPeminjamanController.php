@@ -57,6 +57,7 @@ class PengajuanPeminjamanController extends Controller
             'waktu_mulai' => 'required|date_format:H:i',
             'waktu_selesai' => 'required|date_format:H:i|after:waktu_mulai',
             'keperluan' => 'required|string',
+            'document_user' => 'required|file|mimes:pdf|max:5120',
         ]);
 
         // 🔴 CEK BENTROK JAM
@@ -93,6 +94,14 @@ class PengajuanPeminjamanController extends Controller
             'keperluan' => $validated['keperluan'],
             'status' => 'Belum Diproses',
         ]);
+
+        // ================= UPLOAD DOCUMENT USER =================
+        if ($request->hasFile('document_user')) {
+            $file = $request->file('document_user');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('public/documents/users', $fileName);
+            $peminjaman->update(['document_user' => $path]);
+        }
 
         // ================= GENERATE KODE PEMINJAMAN (URUT) =================
         $tanggalFormat = Carbon::parse($peminjaman->tanggal_peminjaman)->format('dmY');

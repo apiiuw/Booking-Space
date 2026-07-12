@@ -23,5 +23,7 @@ class PeminjamanRuangan extends Model
         'waktu_selesai',
         'keperluan',
         'status',
+        'document_user',
+        'document_admin',
     ];
 }

@@ -66,8 +66,18 @@ class LoanRequestController extends Controller
                 ->with('error', 'Peminjaman sudah diproses sebelumnya.');
         }
 
+        // ================= UPLOAD DOCUMENT ADMIN =================
+        $documentAdminPath = null;
+        if ($request->hasFile('document_admin')) {
+            $request->validate(['document_admin' => 'required|file|mimes:pdf|max:5120']);
+            $file = $request->file('document_admin');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $documentAdminPath = $file->storeAs('public/documents/admin', $fileName);
+        }
+
         $peminjaman->update([
-            'status' => 'Terjadwal'
+            'status' => 'Terjadwal',
+            'document_admin' => $documentAdminPath,
         ]);
 
         return redirect()
@@ -90,8 +100,18 @@ class LoanRequestController extends Controller
                 ->with('error', 'Peminjaman sudah diproses sebelumnya.');
         }
 
+        // ================= UPLOAD DOCUMENT ADMIN =================
+        $documentAdminPath = null;
+        if ($request->hasFile('document_admin')) {
+            $request->validate(['document_admin' => 'required|file|mimes:pdf|max:5120']);
+            $file = $request->file('document_admin');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $documentAdminPath = $file->storeAs('public/documents/admin', $fileName);
+        }
+
         $peminjaman->update([
-            'status' => 'Ditolak'
+            'status' => 'Ditolak',
+            'document_admin' => $documentAdminPath,
         ]);
 
         return redirect()
@@ -121,14 +141,14 @@ class LoanRequestController extends Controller
         // =====================================
 
         // 1️⃣ JIKA TANGGAL SUDAH LEWAT
-        PeminjamanRuangan::where('status', 'Sedang Berlangsung')
+        PeminjamanRuangan::whereIn('status', ['Terjadwal', 'Sedang Berlangsung'])
             ->whereDate('tanggal_peminjaman', '<', $today)
             ->update([
                 'status' => 'Selesai'
             ]);
 
         // 2️⃣ JIKA HARI INI TAPI JAM SUDAH LEWAT
-        PeminjamanRuangan::where('status', 'Sedang Berlangsung')
+        PeminjamanRuangan::whereIn('status', ['Terjadwal', 'Sedang Berlangsung'])
             ->whereDate('tanggal_peminjaman', $today)
             ->where('waktu_selesai', '<', $timeNow)
             ->update([
