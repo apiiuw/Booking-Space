@@ -236,15 +236,24 @@
                                 ></span>
                             </div>
                             <div class="border-b border-slate-50 pb-2 col-span-1 md:col-span-2">
-                                <p class="text-slate-400 font-semibold mb-1">Dokumen Form Peminjaman</p>
-                                <template x-if="selected?.document_user">
-                                    <a :href="'{{ Storage::url('') }}' + selected.document_user.replace('public/', '')" target="_blank" class="inline-flex items-center text-xs font-bold bg-white text-orange-600 border border-orange-200 hover:bg-orange-50 px-3 py-2 rounded-lg transition mt-1">
-                                        <i class="fa-solid fa-file-pdf mr-2"></i> Lihat / Download Dokumen
-                                    </a>
-                                </template>
-                                <template x-if="!selected?.document_user">
-                                    <p class="font-bold text-slate-800 mt-1">Tidak ada dokumen</p>
-                                </template>
+                                <p class="text-slate-400 font-semibold mb-1">Dokumen Lampiran</p>
+                                <div class="flex flex-wrap gap-3 mt-1">
+                                    <template x-if="selected?.document_user">
+                                        <a :href="'{{ Storage::url('') }}' + selected.document_user.replace('public/', '')" target="_blank" class="inline-flex items-center text-xs font-bold bg-white text-orange-600 border border-orange-200 hover:bg-orange-50 px-3 py-2 rounded-lg transition">
+                                            <i class="fa-solid fa-file-pdf mr-2"></i> Surat Permohonan (User)
+                                        </a>
+                                    </template>
+                                    
+                                    <template x-if="selected?.document_admin">
+                                        <a :href="'{{ Storage::url('') }}' + selected.document_admin.replace('public/', '')" target="_blank" class="inline-flex items-center text-xs font-bold bg-white text-emerald-600 border border-emerald-200 hover:bg-emerald-50 px-3 py-2 rounded-lg transition">
+                                            <i class="fa-solid fa-file-signature mr-2"></i> Surat Balasan (Admin)
+                                        </a>
+                                    </template>
+                                    
+                                    <template x-if="!selected?.document_user && !selected?.document_admin">
+                                        <p class="font-bold text-slate-800">Tidak ada dokumen</p>
+                                    </template>
+                                </div>
                             </div>
                         </div>
 
