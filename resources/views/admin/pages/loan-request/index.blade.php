@@ -263,6 +263,13 @@
                                 <span x-text="selected?.keperluan"></span>
                             </div>
                         </div>
+
+                        <div x-show="selected?.catatan_admin">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Catatan Admin</p>
+                            <div class="bg-orange-50 border border-orange-100 rounded-2xl p-4 text-xs md:text-sm text-orange-800 leading-relaxed font-semibold">
+                                <span x-text="selected?.catatan_admin"></span>
+                            </div>
+                        </div>
                     </div>
 
                     {{-- Footer --}}
@@ -314,6 +321,12 @@
                             <label class="block text-xs font-bold text-slate-700 mb-1.5">Surat Balasan / Persetujuan (PDF)</label>
                             <input type="file" name="document_admin" required accept="application/pdf" class="w-full text-sm p-2 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:outline-none transition-all duration-200 text-slate-800 bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
                             <span class="text-[10px] text-slate-400 mt-1 block font-medium">Unggah surat balasan untuk peminjam. Format: PDF, Maks: 5MB.</span>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Catatan (Opsional)</label>
+                            <textarea name="catatan_admin" rows="3" class="w-full text-sm p-3 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:outline-none transition-all duration-200 text-slate-800 bg-white placeholder:text-slate-400" placeholder="Tambahkan catatan untuk peminjam..."></textarea>
+                            <span class="text-[10px] text-slate-400 mt-1 block font-medium">Catatan ini akan dapat dilihat oleh peminjam.</span>
                         </div>
 
                         <div class="flex justify-end gap-3 mt-4">

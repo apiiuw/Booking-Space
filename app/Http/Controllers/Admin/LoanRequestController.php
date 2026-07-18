@@ -11,8 +11,6 @@ class LoanRequestController extends Controller
 {
     public function index(Request $request)
     {
-        $this->autoUpdateStatus();
-
         $query = PeminjamanRuangan::query();
         // ⛔ KECUALIKAN STATUS SELESAI
         $query = PeminjamanRuangan::where('status', '!=', 'Selesai');
@@ -78,6 +76,7 @@ class LoanRequestController extends Controller
         $peminjaman->update([
             'status' => 'Terjadwal',
             'document_admin' => $documentAdminPath,
+            'catatan_admin' => $request->catatan_admin,
         ]);
 
         return redirect()
@@ -112,49 +111,12 @@ class LoanRequestController extends Controller
         $peminjaman->update([
             'status' => 'Ditolak',
             'document_admin' => $documentAdminPath,
+            'catatan_admin' => $request->catatan_admin,
         ]);
 
         return redirect()
             ->route('loan.request.index')
             ->with('success', 'Peminjaman berhasil ditolak.');
     }
-
-    private function autoUpdateStatus()
-    {
-        $now = Carbon::now();
-        $today = $now->toDateString();
-        $timeNow = $now->format('H:i:s');
-
-        // ===============================
-        // TERJADWAL → SEDANG BERLANGSUNG
-        // ===============================
-        PeminjamanRuangan::where('status', 'Terjadwal')
-            ->whereDate('tanggal_peminjaman', $today)
-            ->where('waktu_mulai', '<=', $timeNow)
-            ->where('waktu_selesai', '>=', $timeNow)
-            ->update([
-                'status' => 'Sedang Berlangsung'
-            ]);
-
-        // =====================================
-        // SEDANG BERLANGSUNG → SELESAI
-        // =====================================
-
-        // 1️⃣ JIKA TANGGAL SUDAH LEWAT
-        PeminjamanRuangan::whereIn('status', ['Terjadwal', 'Sedang Berlangsung'])
-            ->whereDate('tanggal_peminjaman', '<', $today)
-            ->update([
-                'status' => 'Selesai'
-            ]);
-
-        // 2️⃣ JIKA HARI INI TAPI JAM SUDAH LEWAT
-        PeminjamanRuangan::whereIn('status', ['Terjadwal', 'Sedang Berlangsung'])
-            ->whereDate('tanggal_peminjaman', $today)
-            ->where('waktu_selesai', '<', $timeNow)
-            ->update([
-                'status' => 'Selesai'
-            ]);
-    }
-
 
 }

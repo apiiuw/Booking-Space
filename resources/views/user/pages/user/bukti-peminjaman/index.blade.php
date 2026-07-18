@@ -53,6 +53,13 @@
                     </span>
                 </p>
 
+                @if($item->catatan_admin)
+                <div class="mb-4 p-3 bg-orange-50 border border-orange-100 rounded-lg">
+                    <p class="text-xs font-bold text-orange-800 mb-1">Catatan Admin:</p>
+                    <p class="text-xs text-orange-700">{{ $item->catatan_admin }}</p>
+                </div>
+                @endif
+
                 <div class="flex flex-col gap-2 mt-2">
                     <button
                         @click="

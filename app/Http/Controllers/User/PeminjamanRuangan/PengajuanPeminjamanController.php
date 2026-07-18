@@ -64,6 +64,7 @@ class PengajuanPeminjamanController extends Controller
         $bentrok = PeminjamanRuangan::whereDate('tanggal_peminjaman', $validated['tanggal_peminjaman'])
             ->where('tipe_ruangan', $validated['tipe_ruangan'])
             ->where('ruangan', $validated['ruangan'])
+            ->where('status', '!=', 'Ditolak')
             ->where(function ($q) use ($validated) {
                 $q->where('waktu_mulai', '<', $validated['waktu_selesai'])
                 ->where('waktu_selesai', '>', $validated['waktu_mulai']);

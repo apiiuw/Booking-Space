@@ -25,5 +25,6 @@ class PeminjamanRuangan extends Model
         'status',
         'document_user',
         'document_admin',
+        'catatan_admin',
     ];
 }
