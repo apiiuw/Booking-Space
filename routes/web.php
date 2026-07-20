@@ -46,6 +46,11 @@ Route::get('/kontak', [KontakController::class, 'index'])->name('kontak');
 
 Route::middleware(['auth'])->group(function () {
     Route::get(
+        '/peminjaman-ruangan/cari',
+        [App\Http\Controllers\User\PeminjamanRuangan\PeminjamanRuanganController::class, 'search']
+    )->name('peminjamanRuangan.search');
+
+    Route::get(
         '/peminjaman-ruangan/tipe-ruangan/{tipe}',
         [TipeRuanganController::class, 'index']
     )->name('peminjamanRuangan.tipe');
@@ -79,6 +84,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/admin/room-availability', [RoomAvailabilityController::class, 'index'])
         ->name('room.availability.index');
+
+    Route::get('/admin/room-availability/search', [RoomAvailabilityController::class, 'search'])
+        ->name('room.availability.search');
 
     Route::get('/admin/room-availability/{type}', [RoomAvailabilityController::class, 'showDetail'])
         ->name('room.availability.detail');

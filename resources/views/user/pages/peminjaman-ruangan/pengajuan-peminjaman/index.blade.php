@@ -353,5 +353,25 @@
 
     inputMulai.addEventListener('change', cekValidasi);
     inputSelesai.addEventListener('change', cekValidasi);
+
+    // Pre-fill otomatis jika datang dari fitur "Cari Ruangan Kosong"
+    const urlParams = new URLSearchParams(window.location.search);
+    const qMulai = urlParams.get('mulai');
+    const qSelesai = urlParams.get('selesai');
+    
+    if (qMulai) {
+        const option = Array.from(inputMulai.options).find(opt => opt.value === qMulai);
+        if(option) option.selected = true;
+    }
+    
+    if (qSelesai) {
+        const option = Array.from(inputSelesai.options).find(opt => opt.value === qSelesai);
+        if(option) option.selected = true;
+    }
+    
+    if (qMulai && qSelesai) {
+        // Trigger validasi otomatis saat halaman dimuat
+        setTimeout(cekValidasi, 500);
+    }
 </script>
 @endpush

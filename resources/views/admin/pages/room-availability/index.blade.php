@@ -15,8 +15,64 @@
                     <span class="w-3 h-8 bg-gradient-to-b from-orange-500 to-amber-500 rounded-lg mr-3 shadow-md shadow-orange-500/25"></span>
                     Ketersediaan Ruangan
                 </h1>
-                <p class="text-slate-500 text-xs md:text-sm mt-1">Pilihlah tipe ruangan yang ingin dilakukan pengecekan jadwal ketersediaan.</p>
+                <p class="text-slate-500 text-xs md:text-sm mt-1">Gunakan fitur pencarian untuk menemukan ruangan kosong, atau pilih tipe ruangan di bawah untuk melihat kalender keseluruhan.</p>
             </div>
+        </div>
+
+        <!-- Fitur Cari Ruangan Kosong -->
+        <div class="bg-white rounded-[32px] border border-slate-100 p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] mb-12 relative overflow-hidden z-20 transform hover:-translate-y-1 transition duration-300">
+            <div class="absolute right-0 top-0 w-32 h-32 bg-gradient-to-bl from-orange-100/50 to-transparent rounded-bl-full -z-10"></div>
+            
+            <div class="mb-6">
+                <span class="text-orange-600 font-extrabold text-xs uppercase tracking-widest">Cari Cepat</span>
+                <h2 class="text-slate-800 text-2xl font-black flex items-center mt-1">
+                    <i class="fa-solid fa-magnifying-glass text-orange-500 mr-3"></i>
+                    Cari Ruangan Kosong
+                </h2>
+                <p class="text-slate-500 text-xs mt-2">Masukkan jadwal untuk memfilter ruangan mana saja yang masih kosong di jam tersebut.</p>
+            </div>
+
+            <form action="{{ route('room.availability.search') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Tanggal</label>
+                    <input type="date" name="tanggal" required class="w-full text-sm p-3.5 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:outline-none transition-all duration-200 text-slate-800 font-medium bg-slate-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Waktu Mulai</label>
+                    <select name="waktu_mulai" required class="w-full text-sm p-3.5 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:outline-none transition-all duration-200 text-slate-800 font-semibold bg-slate-50">
+                        <option value="" disabled selected>Pilih Jam Mulai</option>
+                        @for($h=7; $h<=17; $h++)
+                            @foreach(['00', '30'] as $m)
+                                @if($h==17 && $m=='30') @continue @endif
+                                <option value="{{ str_pad($h, 2, '0', STR_PAD_LEFT).':'.$m }}">{{ str_pad($h, 2, '0', STR_PAD_LEFT).':'.$m }}</option>
+                            @endforeach
+                        @endfor
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Waktu Selesai</label>
+                    <select name="waktu_selesai" required class="w-full text-sm p-3.5 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:outline-none transition-all duration-200 text-slate-800 font-semibold bg-slate-50">
+                        <option value="" disabled selected>Pilih Jam Selesai</option>
+                        @for($h=7; $h<=17; $h++)
+                            @foreach(['00', '30'] as $m)
+                                @if($h==17 && $m=='30') @continue @endif
+                                <option value="{{ str_pad($h, 2, '0', STR_PAD_LEFT).':'.$m }}">{{ str_pad($h, 2, '0', STR_PAD_LEFT).':'.$m }}</option>
+                            @endforeach
+                        @endfor
+                    </select>
+                </div>
+                <div>
+                    <button type="submit" class="w-full inline-flex justify-center items-center bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white font-extrabold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-xs tracking-wider uppercase">
+                        <i class="fa-solid fa-search mr-2"></i>
+                        Cari Ruangan
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Katalog Ruangan Grid -->
+        <div class="mb-4">
+            <h3 class="text-slate-800 text-xl font-black">Katalog Ruangan</h3>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">

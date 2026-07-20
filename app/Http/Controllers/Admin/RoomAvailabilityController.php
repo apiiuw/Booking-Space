@@ -6,12 +6,72 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\PeminjamanRuangan;
+use App\Models\Room;
 
 class RoomAvailabilityController extends Controller
 {
     public function index()
     {
         return view('admin.pages.room-availability.index');
+    }
+
+    public function search(Request $request)
+    {
+        $request->validate([
+            'tanggal' => 'required|date',
+            'waktu_mulai' => 'required|date_format:H:i',
+            'waktu_selesai' => 'required|date_format:H:i|after:waktu_mulai',
+        ]);
+
+        $tanggal = Carbon::parse($request->tanggal);
+        $waktuMulai = Carbon::parse($request->waktu_mulai);
+        $waktuSelesai = Carbon::parse($request->waktu_selesai);
+
+        // Validasi operasional
+        $jamBuka = Carbon::createFromTime(7, 0);
+        $jamTutup = Carbon::createFromTime(17, 0);
+        if ($waktuMulai->lt($jamBuka) || $waktuSelesai->gt($jamTutup)) {
+            return back()->withErrors(['waktu_mulai' => 'Pencarian hanya untuk jam operasional (07:00 - 17:00).'])->withInput();
+        }
+
+        if ($waktuMulai->diffInMinutes($waktuSelesai) < 60) {
+             return back()->withErrors(['waktu_mulai' => 'Minimal peminjaman 1 jam.'])->withInput();
+        }
+
+        // Cari semua ruangan yang aktif
+        $rooms = Room::where('is_active', 1)->get();
+        
+        $availableRooms = [];
+
+        foreach ($rooms as $room) {
+            $tipeDb = ucwords(str_replace('-', ' ', $room->url));
+            $nameParts = explode(' ', $room->name);
+            $roomIdentifier = end($nameParts);
+            $ruanganDb = $tipeDb . ' ' . $roomIdentifier;
+            
+            $bentrok = PeminjamanRuangan::whereDate('tanggal_peminjaman', $request->tanggal)
+                ->where('tipe_ruangan', $tipeDb)
+                ->where('ruangan', $ruanganDb)
+                ->where('status', '!=', 'Ditolak')
+                ->where(function ($q) use ($request) {
+                    $q->where('waktu_mulai', '<', $request->waktu_selesai)
+                      ->where('waktu_selesai', '>', $request->waktu_mulai);
+                })
+                ->exists();
+
+            if (!$bentrok) {
+                $availableRooms[] = $room;
+            }
+        }
+
+        $groupedRooms = collect($availableRooms)->groupBy('type');
+
+        return view('admin.pages.room-availability.search-result', [
+            'tanggal' => $tanggal,
+            'waktu_mulai' => $request->waktu_mulai,
+            'waktu_selesai' => $request->waktu_selesai,
+            'groupedRooms' => $groupedRooms,
+        ]);
     }
 
     public function showDetail($type)

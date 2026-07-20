@@ -60,7 +60,23 @@ class PengajuanPeminjamanController extends Controller
             'document_user' => 'required|file|mimes:pdf|max:5120',
         ]);
 
-        // 🔴 CEK BENTROK JAM
+        $waktuMulaiUser = Carbon::createFromFormat('H:i', $validated['waktu_mulai']);
+        $waktuSelesaiUser = Carbon::createFromFormat('H:i', $validated['waktu_selesai']);
+
+        // 🔴 1. Validasi Jam Operasional (07:00 - 17:00)
+        $jamBuka = Carbon::createFromTime(7, 0);
+        $jamTutup = Carbon::createFromTime(17, 0);
+
+        if ($waktuMulaiUser->lt($jamBuka) || $waktuSelesaiUser->gt($jamTutup)) {
+            return back()->withErrors(['waktu_mulai' => 'Peminjaman hanya dapat dilakukan pada jam operasional (07:00 - 17:00).'])->withInput();
+        }
+
+        // 🔴 2. Validasi Durasi Minimal (1 Jam)
+        if ($waktuMulaiUser->diffInMinutes($waktuSelesaiUser) < 60) {
+            return back()->withErrors(['waktu_mulai' => 'Durasi peminjaman minimal adalah 1 jam.'])->withInput();
+        }
+
+        // 🔴 3. CEK BENTROK JAM
         $bentrok = PeminjamanRuangan::whereDate('tanggal_peminjaman', $validated['tanggal_peminjaman'])
             ->where('tipe_ruangan', $validated['tipe_ruangan'])
             ->where('ruangan', $validated['ruangan'])
@@ -72,9 +88,48 @@ class PengajuanPeminjamanController extends Controller
             ->exists();
 
         if ($bentrok) {
+            // ================= SMART SUGGESTION =================
+            $jadwalHariIni = PeminjamanRuangan::whereDate('tanggal_peminjaman', $validated['tanggal_peminjaman'])
+                ->where('tipe_ruangan', $validated['tipe_ruangan'])
+                ->where('ruangan', $validated['ruangan'])
+                ->where('status', '!=', 'Ditolak')
+                ->orderBy('waktu_mulai')
+                ->get();
+            
+            $durasiDibutuhkan = $waktuMulaiUser->diffInMinutes($waktuSelesaiUser);
+            $current = $jamBuka->copy();
+            $saran = [];
+            
+            foreach ($jadwalHariIni as $jdwl) {
+                $jdwlMulai = Carbon::parse($jdwl->waktu_mulai);
+                $jdwlSelesai = Carbon::parse($jdwl->waktu_selesai);
+                
+                if ($jdwlMulai < $jamBuka) $jdwlMulai = $jamBuka->copy();
+                if ($jdwlSelesai > $jamTutup) $jdwlSelesai = $jamTutup->copy();
+
+                if ($current->diffInMinutes($jdwlMulai, false) >= $durasiDibutuhkan) {
+                    $saran[] = $current->format('H:i') . ' - ' . $jdwlMulai->format('H:i');
+                }
+                
+                if ($current < $jdwlSelesai) {
+                    $current = $jdwlSelesai->copy();
+                }
+            }
+            
+            if ($current->diffInMinutes($jamTutup, false) >= $durasiDibutuhkan) {
+                 $saran[] = $current->format('H:i') . ' - ' . $jamTutup->format('H:i');
+            }
+            
+            if (count($saran) > 0) {
+                $rekomendasi = array_slice($saran, 0, 2);
+                $pesanError = 'Jam sudah terpakai. Saran waktu kosong: ' . implode(' atau ', $rekomendasi) . '.';
+            } else {
+                $pesanError = 'Jam sudah terpakai, dan sisa waktu hari ini tidak cukup untuk durasi tersebut.';
+            }
+
             return back()
                 ->withErrors([
-                    'waktu_mulai' => 'Jam yang dipilih sudah terpakai. Silakan pilih jam lain.'
+                    'waktu_mulai' => $pesanError
                 ])
                 ->withInput();
         }
