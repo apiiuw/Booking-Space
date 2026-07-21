@@ -318,8 +318,8 @@
                         <input type="hidden" name="id" x-bind:value="selected.id">
 
                         <div class="mb-6">
-                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Surat Balasan / Persetujuan (PDF)</label>
-                            <input type="file" name="document_admin" required accept="application/pdf" class="w-full text-sm p-2 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:outline-none transition-all duration-200 text-slate-800 bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Surat Balasan / Persetujuan (Opsional)</label>
+                            <input type="file" name="document_admin" accept="application/pdf" class="w-full text-sm p-2 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:outline-none transition-all duration-200 text-slate-800 bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
                             <span class="text-[10px] text-slate-400 mt-1 block font-medium">Unggah surat balasan untuk peminjam. Format: PDF, Maks: 5MB.</span>
                         </div>
 
